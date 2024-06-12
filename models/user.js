@@ -1,4 +1,5 @@
 const pool = require("../config/database");
+const jwt = require("jsonwebtoken");
 
 class User {
   async findByEmail(email) {
@@ -27,6 +28,10 @@ class User {
     };
     const { rows } = await pool.query(query);
     return rows[0];
+  }
+  
+  async createAccessToken(user) {
+    return jwt.sign({ id: user.id, email: user.email }, "secret_key", { expiresIn: '15m' });
   }
 
 }

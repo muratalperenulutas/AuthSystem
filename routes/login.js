@@ -16,7 +16,9 @@ router.post("/", async (req, res) => {
     return res.status(401).json({ message: "Password do not match!" });
   }
 
-  res.status(200).json({ message: "Login successful" });
+  const accessToken= await User.createAccessToken(user);
+
+  res.status(200).json({ message: "Login successful",accessToken: accessToken });
     
   }
   catch(error){
