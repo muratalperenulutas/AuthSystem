@@ -10,10 +10,20 @@ class User {
     console.log(rows)
     return rows[0];
   }
-  async registerUser(email, password) {
+  async findByUsername(username) {
     const query = {
-      text: "INSERT INTO users (email, password, isVerified) VALUES ($1, $2, $3) RETURNING *",
-      values: [email, password, false],
+      text: "SELECT * FROM users WHERE username = $1",
+      values: [username],
+    };
+    const { rows } = await pool.query(query);
+    console.log(rows)
+    return rows[0];
+  }
+
+  async registerUser(username, email, password) {
+    const query = {
+      text: "INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING *",
+      values: [username, email,password],
     };
     const { rows } = await pool.query(query);
     return rows[0];
