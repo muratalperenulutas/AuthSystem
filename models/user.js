@@ -12,12 +12,13 @@ class User {
   }
   async registerUser(email, password) {
     const query = {
-      text: "INSERT INTO users (email, password, isVerify) VALUES ($1, $2, $3) RETURNING *",
+      text: "INSERT INTO users (email, password, isVerified) VALUES ($1, $2, $3) RETURNING *",
       values: [email, password, false],
     };
     const { rows } = await pool.query(query);
     return rows[0];
   }
+
 }
 
 module.exports = new User();
