@@ -16,7 +16,7 @@ router.post("/", async (req, res) => {
     res.status(201).json({ message: "User has been registered!", user: newUser });
     
   } catch (error) {
-    res.status(500).json({ message: "Internal server error", user: newUser });
+    res.status(500).json({ message: "Internal server error"});
     
   }
 
