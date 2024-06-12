@@ -1,5 +1,6 @@
 const pool = require("../config/database");
 const jwt = require("jsonwebtoken");
+const bcrypt=require('bcrypt');
 
 class User {
   async findByEmail(email) {
@@ -22,14 +23,15 @@ class User {
   }
 
   async registerUser(username, email, password) {
+    const hashedPassword= await bcrypt.hash(password, 10);
     const query = {
       text: "INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING *",
-      values: [username, email,password],
+      values: [username, email,hashedPassword],
     };
     const { rows } = await pool.query(query);
     return rows[0];
   }
-  
+
   async createAccessToken(user) {
     return jwt.sign({ id: user.id, email: user.email }, "secret_key", { expiresIn: '15m' });
   }
