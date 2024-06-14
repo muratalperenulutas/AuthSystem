@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
+const sendVerificationEmail = require("../utils/sendVerificationEmail");
 
 router.post("/", async (req, res) => {
   const { username, email, password } = req.body;
@@ -18,6 +19,7 @@ router.post("/", async (req, res) => {
     }
 
     const newUser = await User.registerUser(username, email, password);
+    sendVerificationEmail(email,newUser.verification_token);
     res
       .status(201)
       .json({ message: "User has been registered!", user: newUser });
