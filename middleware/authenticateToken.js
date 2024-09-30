@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const config = require('../config/config');
 
 const authenticateToken = (req, res, next) => {
   const token = req.headers["authorization"];
@@ -7,7 +8,7 @@ const authenticateToken = (req, res, next) => {
     return res.sendStatus(401);
   }
 
-  jwt.verify(token, "secret_key", (err, user) => {
+  jwt.verify(token, config.tokens.accessTokenSecret, (err, user) => {
     if (err) {
       return res.sendStatus(403);
     }

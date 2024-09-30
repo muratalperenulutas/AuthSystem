@@ -2,6 +2,7 @@ const pool = require("../services/database");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
+const config = require("../config/config");
 
 class User {
   async findByEmail(email) {
@@ -45,7 +46,7 @@ class User {
   }
 
   async createAccessToken(user) {
-    return jwt.sign({ id: user.id, email: user.email }, "secret_key", {
+    return jwt.sign({ id: user.id, email: user.email }, config.tokens.accessTokenSecret, {
       expiresIn: "15m",
     });
   }
