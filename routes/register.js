@@ -2,24 +2,27 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
 const sendVerificationEmail = require("../utils/sendVerificationEmail");
+const crypto = require("crypto");
 
 router.post("/", async (req, res) => {
-  const { username, email, password } = req.body;
+  const { email, password } = req.body;
 
   try {
     const existingUser1 = await User.findByEmail(email);
-    const existingUser2 = await User.findByUsername(username);
 
     if (existingUser1) {
       return res.status(400).json({ message: "Email already in use!" });
     }
 
-    if (existingUser2) {
-      return res.status(400).json({ message: "Username already in use!" });
-    }
+    let username;
+    let existingUser2;
+    do {
+      username = `user_${crypto.randomBytes(4).toString("hex")}`;
+      existingUser2 = await User.findByUsername(username);
+    } while (existingUser2);
 
     const newUser = await User.registerUser(username, email, password);
-    sendVerificationEmail(email,newUser.verification_token);
+    sendVerificationEmail(email, newUser.verification_token);
     res
       .status(201)
       .json({ message: "User has been registered!", user: newUser });
