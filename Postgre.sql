@@ -1,4 +1,4 @@
-users table
+--users table
 
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
@@ -10,9 +10,9 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-token table
+--refresh token table
 
-CREATE TABLE tokens (
+CREATE TABLE refresh_tokens (
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
     refresh_token VARCHAR(255) UNIQUE NOT NULL,
