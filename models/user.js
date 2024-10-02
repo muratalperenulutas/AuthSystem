@@ -45,9 +45,9 @@ class User {
     return rows[0];
   }
 
-  async createAccessToken(user) {
+  async createAccessToken(user,refreshToken) {
     return jwt.sign(
-      { id: user.id, email: user.email },
+      { id: user.id, refreshToken:refreshToken },
       config.tokens.accessTokenSecret,
       {
         expiresIn: "15m",
