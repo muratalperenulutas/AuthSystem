@@ -66,7 +66,7 @@ class User {
     }
     async function saveRefreshTokenToDb(refreshToken, userId) {
       const query = {
-        text: "INSERT INTO tokens (refresh_token, expires_at, user_id) VALUES ($1, CURRENT_TIMESTAMP + INTERVAL '7 days', $2) RETURNING *",
+        text: "INSERT INTO refresh_tokens (refresh_token, expires_at, user_id) VALUES ($1, CURRENT_TIMESTAMP + INTERVAL '7 days', $2) RETURNING *",
         values: [refreshToken, userId],
       };
       const { rows } = await pool.query(query);
@@ -79,9 +79,9 @@ class User {
 
     return refreshToken;
   }
-  async removeRefreshTokens(userId, refreshToken) {
+  async removeRefreshTokens(userId) {
     const query = {
-      text: "DELETE FROM tokens WHERE user_id = $1",
+      text: "DELETE FROM refresh_tokens WHERE user_id = $1",
       values: [userId],
     };
 
@@ -91,7 +91,7 @@ class User {
 
   async getRefreshToken(id, refreshToken) {
     const query = {
-      text: "SELECT * FROM tokens WHERE user_id = $1 AND refresh_token = $2",
+      text: "SELECT * FROM refresh_tokens WHERE user_id = $1 AND refresh_token = $2",
       values: [id, refreshToken],
     };
     const { rows } = await pool.query(query);
