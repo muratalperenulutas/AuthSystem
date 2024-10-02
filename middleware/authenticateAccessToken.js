@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const config = require("../config/config");
+const User = require("../models/user");
 
 const authenticateAccessToken = (req, res, next) => {
   const accessToken = req.headers["authorization"];
@@ -8,13 +9,31 @@ const authenticateAccessToken = (req, res, next) => {
     return res.sendStatus(401);
   }
 
-  jwt.verify(accessToken, config.tokens.accessTokenSecret, (err, user) => {
-    if (err) {
-      return res.sendStatus(403);
+  jwt.verify(
+    accessToken,
+    config.tokens.accessTokenSecret,
+    async (err, user) => {
+      if (err) {
+        return res.sendStatus(403);
+      }
+      req.user = user;
+      refreshToken = req.user.refreshToken;
+
+      try {
+        const tokenData = await User.getRefreshToken(user.id, refreshToken);
+        if (!tokenData || tokenData.refresh_token !== refreshToken) {
+          return res.sendStatus(403);
+        }
+
+        next();
+      } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Internal server error" });
+      }
+
+      next();
     }
-    req.user = user;
-    next();
-  });
+  );
 };
 
 module.exports = authenticateAccessToken;

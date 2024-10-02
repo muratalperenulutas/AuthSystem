@@ -18,9 +18,9 @@ const login = async (req, res) => {
       return res.status(401).json({ message: "Password do not match!" });
     }
 
-    const accessToken = await User.createAccessToken(user);
     const refreshToken = await User.handleRefreshToken(user);
-
+    const accessToken = await User.createAccessToken(user,refreshToken);
+    
     res
       .status(200)
       .json({
