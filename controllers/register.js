@@ -1,10 +1,8 @@
-const express = require("express");
-const router = express.Router();
 const User = require("../models/user");
 const sendVerificationEmail = require("../utils/sendVerificationEmail");
 const crypto = require("crypto");
 
-router.post("/", async (req, res) => {
+const register = async (req, res) => {
   const { email, password } = req.body;
 
   try {
@@ -30,6 +28,6 @@ router.post("/", async (req, res) => {
     console.log(error);
     res.status(500).json({ message: "Internal server error" });
   }
-});
+};
 
-module.exports = router;
+module.exports = { register };

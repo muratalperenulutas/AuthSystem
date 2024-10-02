@@ -1,8 +1,6 @@
-const express = require("express");
-const router = express.Router();
 const User = require("../models/user");
 
-router.get("/:verificationToken", async (req, res) => {
+const verify = async (req, res) => {
   const { verificationToken } = req.params;
   try {
     const user = await User.verifyUser(verificationToken);
@@ -16,6 +14,6 @@ router.get("/:verificationToken", async (req, res) => {
     console.log(error);
     res.status(500).json({ message: "Internal server error" });
   }
-});
+};
 
-module.exports = router;
+module.exports = { verify };
