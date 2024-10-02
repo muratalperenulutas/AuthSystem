@@ -46,9 +46,57 @@ class User {
   }
 
   async createAccessToken(user) {
-    return jwt.sign({ id: user.id, email: user.email }, config.tokens.accessTokenSecret, {
-      expiresIn: "15m",
-    });
+    return jwt.sign(
+      { id: user.id, email: user.email },
+      config.tokens.accessTokenSecret,
+      {
+        expiresIn: "15m",
+      }
+    );
+  }
+
+  async handleRefreshToken(user) {
+    async function createRefreshToken(user) {
+      const refreshToken = jwt.sign(
+        { id: user.id },
+        config.tokens.refreshTokenSecret,
+        { expiresIn: "7d" }
+      );
+      return refreshToken;
+    }
+    async function saveRefreshTokenToDb(refreshToken, userId) {
+      const query = {
+        text: "INSERT INTO tokens (refresh_token, expires_at, user_id) VALUES ($1, CURRENT_TIMESTAMP + INTERVAL '7 days', $2) RETURNING *",
+        values: [refreshToken, userId],
+      };
+      const { rows } = await pool.query(query);
+      console.log(rows);
+      return rows[0];
+    }
+    const refreshToken = await createRefreshToken(user);
+
+    await saveRefreshTokenToDb(refreshToken, user.id);
+
+    return refreshToken;
+  }
+  async removeRefreshTokens(userId, refreshToken) {
+    const query = {
+      text: "DELETE FROM tokens WHERE user_id = $1",
+      values: [userId],
+    };
+
+    const result = await pool.query(query);
+    return result;
+  }
+
+  async getRefreshToken(id, refreshToken) {
+    const query = {
+      text: "SELECT * FROM tokens WHERE user_id = $1 AND refresh_token = $2",
+      values: [id, refreshToken],
+    };
+    const { rows } = await pool.query(query);
+    console.log(rows);
+    return rows[0];
   }
 }
 
