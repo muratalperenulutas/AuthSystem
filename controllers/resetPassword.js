@@ -4,7 +4,7 @@ const resetPassword = async (req, res) => {
   const { passwordResetToken } = req.params;
   const { password } = req.body;
   console.log("Received token:", passwordResetToken);
-  console.log("Received password:", password);
+  //console.log("Received password:", password);
 
   try {
     const user = await User.findByPasswordResetToken(passwordResetToken);
@@ -12,7 +12,7 @@ const resetPassword = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    console.log(user.id);
+    //console.log(user.id);
     
     await User.updatePassword(user.id, password);
 

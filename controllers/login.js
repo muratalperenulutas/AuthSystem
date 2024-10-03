@@ -27,9 +27,13 @@ const login = async (req, res) => {
         message: "Login successful",
         accessToken: accessToken,
         refreshToken: refreshToken,
+        userData:{
+          username:user.username,
+          email:user.email,
+        },
       });
   } catch (error) {
-    console.log(error);
+    console.log("Login error:",error);
     res.status(500).json({ message: "Internal server error" });
   }
 };

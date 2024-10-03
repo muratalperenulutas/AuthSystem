@@ -11,7 +11,7 @@ class User {
       values: [email],
     };
     const { rows } = await pool.query(query);
-    console.log(rows);
+    //console.log(rows);
     return rows[0];
   }
   async findByUsername(username) {
@@ -20,14 +20,14 @@ class User {
       values: [username],
     };
     const { rows } = await pool.query(query);
-    console.log(rows);
+    //console.log(rows);
     return rows[0];
   }
 
   async registerUser(username, email, password) {
     const hashedPassword = await bcrypt.hash(password, 10);
     const verificationToken = crypto.randomBytes(32).toString("hex");
-    console.log(verificationToken);
+    //console.log(verificationToken);
     const query = {
       text: "INSERT INTO users (username, email, password, verification_token) VALUES ($1, $2, $3, $4) RETURNING *",
       values: [username, email, hashedPassword, verificationToken],
@@ -70,7 +70,7 @@ class User {
         values: [refreshToken, userId],
       };
       const { rows } = await pool.query(query);
-      console.log(rows);
+      //console.log(rows);
       return rows[0];
     }
     const refreshToken = await createRefreshToken(user);
@@ -95,7 +95,7 @@ class User {
       values: [id, refreshToken],
     };
     const { rows } = await pool.query(query);
-    console.log(rows);
+    //console.log(rows);
     return rows[0];
   }
 

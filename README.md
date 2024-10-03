@@ -34,7 +34,7 @@ JWT token-based authentication application using Express, Node.js, and PostgreSQ
 
 git clone https://github.com/muratalperenulutas/AuthSystem.git
 
-cd your-repo
+cd AuthSystem
 
 ```
 
@@ -85,7 +85,7 @@ npm start
 }
 ```
 
-This will return an access token and refresh token.
+This will return an access token , refresh token and user data.
 
 - **Test**: Send a GET request to `/auth/test` with the authorization header (access token) to show the test page.
 
