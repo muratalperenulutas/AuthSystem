@@ -8,7 +8,7 @@ RUN npm install dotenv bcrypt crypto jsonwebtoken pg nodemailer express path
 
 COPY . .
 
-EXPOSE 3000
+EXPOSE 7000
 
 CMD ["npm", "start"]
 
