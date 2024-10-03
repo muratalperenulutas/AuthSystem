@@ -23,9 +23,9 @@ const register = async (req, res) => {
     sendVerificationEmail(email, newUser.verification_token);
     res
       .status(201)
-      .json({ message: "User has been registered!", user: newUser });
+      .json({ message: "User has been registered!" });
   } catch (error) {
-    console.log(error);
+    console.log("Register error:",error);
     res.status(500).json({ message: "Internal server error" });
   }
 };

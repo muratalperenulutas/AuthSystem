@@ -10,11 +10,11 @@ async function forgotPassword(req, res) {
       return res.status(404).json({ message: "User not found." });
     }
 
-    console.log(user);
+    //console.log(user);
 
     passwordResetToken=await User.createResetPasswordTokenAndSave(user);
     sendPasswordResetEmail(email,passwordResetToken);
-    console.log(passwordResetToken);
+    //console.log(passwordResetToken);
 
     res.status(200).json({ message: "Email sent!" });
   } catch (error) {
