@@ -4,8 +4,8 @@ async function logout(req, res) {
   const userId = req.user.id;
 
   try {
-    result = User.removeRefreshTokens(userId);
-    if (result.rowCount === 0) {
+    result = await User.removeRefreshTokens(userId);
+    if (!result) {
       return res.status(404).json({ message: "No active session found." });
     }
 

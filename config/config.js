@@ -15,10 +15,14 @@ module.exports = {
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASS,  
     },
-    emailSubject: 'Email Verification',
-    emailBodyText(token) {
+    verifyEmailSubject: 'Email Verification',
+    verifyEmailBodyText(token) {
       return `Please verify your email by clicking on the following link: ${process.env.BASE_URL}/verify/${token}`;
     },
+    passwordResetEmailSubject: 'Reset Password',
+    passwordResetEmailBodyText(passwordResetToken){
+      return `Please reset your password by clicking on the following link: ${process.env.BASE_URL}/reset-password/${passwordResetToken}`;
+    }
   },
   tokens: {
     accessTokenSecret: process.env.ACCESS_TOKEN_SECRET,
