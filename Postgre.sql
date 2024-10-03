@@ -7,6 +7,7 @@ CREATE TABLE users (
     password VARCHAR(255) NOT NULL,
 	is_verified BOOLEAN DEFAULT FALSE,
 	verification_token VARCHAR(255),
+    reset_password_token VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

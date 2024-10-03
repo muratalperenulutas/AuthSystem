@@ -1,7 +1,7 @@
 const nodemailer = require("nodemailer");
 const config = require("../config/config");
 
-const sendVerificationEmail = (email, token) => {
+const sendPasswordResetEmail = (email, resetPasswordToken) => {
   const transporter = nodemailer.createTransport({
     service: config.email.service,
     auth: config.email.auth,
@@ -10,8 +10,8 @@ const sendVerificationEmail = (email, token) => {
   const mailOptions = {
     from: config.email.auth.user,
     to: email,
-    subject: config.email.verifyEmailBodyText,
-    text: config.email.verifyEmailBodyText(token),
+    subject: config.email.passwordResetEmailSubject,
+    text: config.email.passwordResetEmailBodyText(resetPasswordToken),
   };
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
@@ -22,4 +22,4 @@ const sendVerificationEmail = (email, token) => {
   });
 };
 
-module.exports = sendVerificationEmail;
+module.exports = sendPasswordResetEmail;

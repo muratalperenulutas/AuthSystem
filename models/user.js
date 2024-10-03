@@ -98,6 +98,36 @@ class User {
     console.log(rows);
     return rows[0];
   }
+
+  async createResetPasswordTokenAndSave(user){
+    const passwordResetToken=crypto.randomBytes(32).toString("hex");
+    const query = {
+      text: "UPDATE users SET reset_password_token = $1 WHERE id = $2 RETURNING *",
+      values: [passwordResetToken,user.id],
+    };
+    const { rows } = await pool.query(query);
+    return passwordResetToken;
+  }
+
+  async findByPasswordResetToken(passwordResetToken) {
+    const query = {
+      text: "SELECT * FROM users WHERE reset_password_token = $1",
+      values: [passwordResetToken],
+    };
+    const { rows } = await pool.query(query);
+    return rows[0]; 
+  }
+  
+  async updatePassword(userId, password) {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const query = {
+      text: "UPDATE users SET password = $1, reset_password_token = NULL WHERE id = $2 RETURNING *",
+      values: [hashedPassword, userId],
+    };
+    const { rows } = await pool.query(query);
+    return rows[0];
+  }
+  
 }
 
 module.exports = new User();
