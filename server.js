@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const authRoutes = require("./routes/auth");
 const db = require("./services/database");
+const { auth } = require("./controllers/auth");
 
 db.connect()
   .then(() => {
@@ -15,6 +16,8 @@ const app = express();
 
 app.use(bodyParser.json());
 //app.use(bodyParser.urlencoded({ extended: true }));  //for x-www-form-urlencoded
+
+app.get("/auth", auth);
 
 app.use("/auth", authRoutes);
 

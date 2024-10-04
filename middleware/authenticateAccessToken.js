@@ -22,12 +22,12 @@ const authenticateAccessToken = (req, res, next) => {
       try {
         const tokenData = await User.getRefreshToken(user.id, refreshToken);
         if (!tokenData || tokenData.refresh_token !== refreshToken) {
-          return res.sendStatus(403);
+          return res.status(403).json({ message: "Token invalid!" });
         }
 
         next();
       } catch (error) {
-        console.log("Auth access token error:",error);
+        console.log("Auth access token error:", error);
         res.status(500).json({ message: "Internal server error" });
       }
 
