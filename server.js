@@ -17,7 +17,9 @@ const app = express();
 app.use(bodyParser.json());
 //app.use(bodyParser.urlencoded({ extended: true }));  //for x-www-form-urlencoded
 
-app.get("/auth", auth);
+let serverStartTime = new Date();
+
+app.get("/auth", auth(serverStartTime));
 
 app.use("/auth", authRoutes);
 

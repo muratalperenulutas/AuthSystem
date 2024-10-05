@@ -9,7 +9,7 @@ const verify = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    res.status(200).json({ message: "Email verified successfully" });
+    res.status(200).send("Email verified successfully" );
   } catch (error) {
     console.log("Email verify error",error);
     res.status(500).json({ message: "Internal server error" });
